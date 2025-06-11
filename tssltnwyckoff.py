@@ -7,10 +7,13 @@ def builda2dcrystal(planegroup, occupiedwyckoffpositions):
 
     #takes a plane group and occupied wyckoff positions (wyckoff letters) and gives a generalized sets of fractional points that represent the crystal
     #On symmetry groups such as mirror planes function assigns a general location on the symmetry element for the point, no control yet
+    #very tedious
 
+
+    #list of plane groups
     listofplanegroups = ["p1","p2","pm","pg","cm","pmm","pmg","pgg","cmm","p4","p4m","p4g","p3","p3m","p3m1","p6","p6m"]
-    fraccoords = []
-    if planegroup in listofplanegroups:
+    fraccoords = []#fractional coord list to be appended to
+    if planegroup in listofplanegroups: #finds the wanted plane groups, appends the points of the wanted wps
         if planegroup == listofplanegroups[0]:
             for wp in occupiedwyckoffpositions:
                 if wp == "a":
@@ -318,6 +321,9 @@ def builda2dcrystal(planegroup, occupiedwyckoffpositions):
     return np.array(fraccoords)
 
 def generallatticevectors(planegroup):
+    #same concept of the build a crystal, finds the wanted planegroup and returns a general set of corresponding lattice vectors
+
+
     listofplanegroups = ["p1", "p2", "pm", "pg", "cm", "pmm", "pmg", "pgg", "cmm", "p4", "p4m", "p4g", "p3", "p3m",
                          "p3m1", "p6", "p6m"]
     latticevectorsset = [np.array([[.93969,.34202,0],[.98481,.17365,0],[0,0,10]]),np.array([[1.5,0,0],[0,1,0],[0,0,10]]),np.array([[.75,.5,0],[.75,-.5,0],[0,0,10]]),np.array([[1,0,0],[0,1,0],[0,0,10]]),np.array([[.5,sqrt(3)/2,0],[1,0,0],[0,0,10]])]
@@ -337,11 +343,12 @@ def generallatticevectors(planegroup):
 
     return latticevectors
 
-pts = builda2dcrystal("p6", ["a","c","d"])
-latticevectors = generallatticevectors("p6")
+#all the testing
+pts = builda2dcrystal("p6", ["a","c","d"])#fractional coords
+latticevectors = generallatticevectors("p6")#lattice vectors
 
-cartpts = np.zeros_like(pts)
+cartpts = np.zeros_like(pts)#turns form fractional into cartesian coords
 for i in range(pts.shape[0]):
     cartpts[i,:] = latticevectors[0,:2]*pts[i,0] + latticevectors[1,:2]*pts[i,1]
 print(cartpts)
-twodstructureplotter(latticevectors,cartpts,8,latticeshown=False,speciesshown=False,bondshown=True)
+twodstructureplotter(latticevectors,cartpts,8,latticeshown=False,speciesshown=False,bondshown=True)#plots the structure
