@@ -3,7 +3,31 @@ import numpy as np
 from WyckoffPlaneGroupID import carttofrac, twodstructureplotter
 from math import pi, sqrt
 
-def builda2dcrystal(planegroup, occupiedwyckoffpositions):
+def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> np.ndarray:
+    """Generate fractional coordinates for a 2D crystal structure based on plane group and Wyckoff positions.
+
+    This function takes a plane group and occupied Wyckoff positions (Wyckoff letters) and returns
+    a set of fractional coordinates that represent the crystal structure. For symmetry groups with
+    mirror planes, the function assigns a general location on the symmetry element for the point.
+
+    Parameters
+    ----------
+    planegroup : str
+        The plane group symbol (e.g. "p1", "p2", "pm", etc.)
+    occupiedwyckoffpositions : list of str
+        List of Wyckoff position letters that are occupied in the structure
+
+    Returns
+    -------
+    numpy.ndarray
+        Array of fractional coordinates for all equivalent positions in the unit cell
+
+    Notes
+    -----
+    The function currently has limited control over the exact positions of points on symmetry elements.
+    The implementation is quite tedious due to the need to handle all possible plane groups and
+    Wyckoff positions.
+    """
 
     #takes a plane group and occupied wyckoff positions (wyckoff letters) and gives a generalized sets of fractional points that represent the crystal
     #On symmetry groups such as mirror planes function assigns a general location on the symmetry element for the point, no control yet
@@ -319,7 +343,7 @@ def builda2dcrystal(planegroup, occupiedwyckoffpositions):
 
     return np.array(fraccoords)
 
-def generallatticevectors(planegroup):
+def generallatticevectors(planegroup: str) -> np.ndarray:
     """Return lattice vectors for a given 2D plane group.
 
     Parameters
