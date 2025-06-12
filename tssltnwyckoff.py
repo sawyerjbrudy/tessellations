@@ -9,7 +9,6 @@ def builda2dcrystal(planegroup, occupiedwyckoffpositions):
     #On symmetry groups such as mirror planes function assigns a general location on the symmetry element for the point, no control yet
     #very tedious
 
-
     #list of plane groups
     listofplanegroups = ["p1","p2","pm","pg","cm","pmm","pmg","pgg","cmm","p4","p4m","p4g","p3","p3m","p3m1","p6","p6m"]
     fraccoords = []#fractional coord list to be appended to
@@ -24,7 +23,7 @@ def builda2dcrystal(planegroup, occupiedwyckoffpositions):
                     fraccoords.append([.25,.25])
                     fraccoords.append([-.25,-.25])
                 elif wp == "d":
-                    fraccords.append([.5,.5])
+                    fraccoords.append([.5,.5])
                 elif wp == "c":
                     fraccoords.append([.5,0])
                 elif wp == "b":
@@ -321,27 +320,54 @@ def builda2dcrystal(planegroup, occupiedwyckoffpositions):
     return np.array(fraccoords)
 
 def generallatticevectors(planegroup):
-    #same concept of the build a crystal, finds the wanted planegroup and returns a general set of corresponding lattice vectors
+    """Return lattice vectors for a given 2D plane group.
 
+    Parameters
+    ----------
+    planegroup : str
+        The plane group symbol (e.g. "p1", "p2", "pm", etc.)
 
-    listofplanegroups = ["p1", "p2", "pm", "pg", "cm", "pmm", "pmg", "pgg", "cmm", "p4", "p4m", "p4g", "p3", "p3m",
-                         "p3m1", "p6", "p6m"]
-    latticevectorsset = [np.array([[.93969,.34202,0],[.98481,.17365,0],[0,0,10]]),np.array([[1.5,0,0],[0,1,0],[0,0,10]]),np.array([[.75,.5,0],[.75,-.5,0],[0,0,10]]),np.array([[1,0,0],[0,1,0],[0,0,10]]),np.array([[.5,sqrt(3)/2,0],[1,0,0],[0,0,10]])]
-    if planegroup in listofplanegroups:
-        if planegroup == "p1":
-            latticevectors = latticevectorsset[0]
-        elif planegroup == "p2" or planegroup == "pm" or planegroup == "pg" or planegroup == "pgg" or planegroup == "pmm" or planegroup == "pmg":
-            latticevectors = latticevectorsset[1]
-        elif planegroup == "cm" or planegroup == "cmm":
-            latticevectors = latticevectorsset[2]
-        elif planegroup == "p4" or planegroup == "p4m" or planegroup == "p4g":
-            latticevectors = latticevectorsset[3]
-        elif planegroup == "p3" or planegroup == "p3m" or planegroup == "p3m1" or planegroup == "p6" or planegroup == "p6m":
-            latticevectors = latticevectorsset[4]
-    else:
+    Returns
+    -------
+    numpy.ndarray
+        A 3x3 array containing the lattice vectors. The first two rows contain
+        the 2D lattice vectors, while the third row is [0,0,10] for compatibility
+        with 3D operations.
+
+    Notes
+    -----
+    The function maps plane groups to one of five standard lattice vector sets:
+    1. p1: General oblique lattice
+    2. p2, pm, pg, pgg, pmm, pmg: Rectangular lattice
+    3. cm, cmm: Centered rectangular lattice
+    4. p4, p4m, p4g: Square lattice
+    5. p3, p3m, p3m1, p6, p6m: Hexagonal lattice
+    """
+    listofplanegroups = ["p1", "p2", "pm", "pg", "cm", "pmm", "pmg", "pgg", "cmm", 
+                        "p4", "p4m", "p4g", "p3", "p3m", "p3m1", "p6", "p6m"]
+    
+    latticevectorsset = [
+        np.array([[.93969,.34202,0], [.98481,.17365,0], [0,0,10]]),  # p1
+        np.array([[1.5,0,0], [0,1,0], [0,0,10]]),                     # p2,pm,pg,pgg,pmm,pmg
+        np.array([[.75,.5,0], [.75,-.5,0], [0,0,10]]),               # cm,cmm
+        np.array([[1,0,0], [0,1,0], [0,0,10]]),                       # p4,p4m,p4g
+        np.array([[.5,sqrt(3)/2,0], [1,0,0], [0,0,10]])              # p3,p3m,p3m1,p6,p6m
+    ]
+
+    if planegroup not in listofplanegroups:
         print("Planegroup not found")
+        return None
 
-    return latticevectors
+    if planegroup == "p1":
+        return latticevectorsset[0]
+    elif planegroup in ["p2", "pm", "pg", "pgg", "pmm", "pmg"]:
+        return latticevectorsset[1]
+    elif planegroup in ["cm", "cmm"]:
+        return latticevectorsset[2]
+    elif planegroup in ["p4", "p4m", "p4g"]:
+        return latticevectorsset[3]
+    elif planegroup in ["p3", "p3m", "p3m1", "p6", "p6m"]:
+        return latticevectorsset[4]
 
 #all the testing
 pts = builda2dcrystal("p6", ["a","c","d"])#fractional coords
