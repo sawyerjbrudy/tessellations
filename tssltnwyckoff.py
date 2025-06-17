@@ -143,20 +143,20 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
                     fraccoords.append([.625,-.625])
                     fraccoords.append([-.625,.625])
                 elif wp == "e":
-                    fraccoords.append([0,.25])
-                    fraccoords.append([0,-.25])
-                    fraccoords.append([0, .75])
-                    fraccoords.append([0, -.75])
+                    fraccoords.append([0,.29])
+                    fraccoords.append([0,-.29])
+                    fraccoords.append([0, .79])
+                    fraccoords.append([0, -.79])
                 elif wp == "d":
                     fraccoords.append([.25,0])
                     fraccoords.append([-.25,0])
                     fraccoords.append([-.75,0])
                     fraccoords.append([.75,0])
                 elif wp == "c":
-                    fraccoords.append([.25,.25])
-                    fraccoords.append([.75,.25])
-                    fraccoords.append([.75, .75])
-                    fraccoords.append([1.25, .75])
+                    fraccoords.append([.29,.29])
+                    fraccoords.append([.79,.29])
+                    fraccoords.append([.79, .79])
+                    fraccoords.append([1.29, .79])
                 elif wp == "b":
                     fraccoords.append([0,.5])
                     fraccoords.append([.5,1])
@@ -166,10 +166,14 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
         elif planegroup == listofplanegroups[9]:
             for wp in occupiedwyckoffpositions:
                 if wp == "d":
-                    fraccoords.append([.25,.25])
-                    fraccoords.append([-.25,.25])
-                    fraccoords.append([-.25,-.25])
-                    fraccoords.append([.25,-.25])
+                    fraccoords.append([.125,.125])
+                    fraccoords.append([-.125,-.125])
+                    fraccoords.append([-.125,.125])
+                    fraccoords.append([.125,-.125])
+                    fraccoords.append([.625,.625])
+                    fraccoords.append([-.625,-.625])
+                    fraccoords.append([.625,-.625])
+                    fraccoords.append([-.625,.625])
                 elif wp == "c":
                     fraccoords.append([.5,0])
                     fraccoords.append([0,.5])
@@ -199,10 +203,10 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
                     fraccoords.append([.5,.25])
                     fraccoords.append([.5,-.25])
                 elif wp == "d":
-                    fraccoords.append([.29,0])
-                    fraccoords.append([-.29,0])
-                    fraccoords.append([0,-.29])
-                    fraccoords.append([0, .29])
+                    fraccoords.append([.25,0])
+                    fraccoords.append([-.25,0])
+                    fraccoords.append([0,-.25])
+                    fraccoords.append([0, .25])
                 elif wp == "c":
                     fraccoords.append([.5,0])
                     fraccoords.append([0,.5])
@@ -322,12 +326,12 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
                     fraccoords.append([-.25,-.5])
                     fraccoords.append([.5,.25])
                 elif wp == "d":
-                    fraccoords.append([.375,0])
-                    fraccoords.append([0,.375])
-                    fraccoords.append([-.375,-.375])
-                    fraccoords.append([-.375,0])
-                    fraccoords.append([0,-.375])
-                    fraccoords.append([.375,.375])
+                    fraccoords.append([.25,0])
+                    fraccoords.append([0,.25])
+                    fraccoords.append([-.25,-.25])
+                    fraccoords.append([-.25,0])
+                    fraccoords.append([0,-.25])
+                    fraccoords.append([.25,.25])
                 elif wp == "c":
                     fraccoords.append([.5,0])
                     fraccoords.append([0,.5])
@@ -343,7 +347,7 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
 
     return np.array(fraccoords)
 
-def generallatticevectors(planegroup: str) -> np.ndarray:
+def generallatticevectors(planegroup: str):
     """Return lattice vectors for a given 2D plane group.
 
     Parameters
@@ -393,12 +397,13 @@ def generallatticevectors(planegroup: str) -> np.ndarray:
     elif planegroup in ["p3", "p3m", "p3m1", "p6", "p6m"]:
         return latticevectorsset[4]
 
-#all the testing
-pts = builda2dcrystal("p6", ["a","c","d"])#fractional coords
-latticevectors = generallatticevectors("p6")#lattice vectors
+if __name__ == "__main__":
+    #all the testing
+    pts = builda2dcrystal("p6", ["a","c","d"])#fractional coords
+    latticevectors = generallatticevectors("p6")#lattice vectors
 
-cartpts = np.zeros_like(pts)#turns form fractional into cartesian coords
-for i in range(pts.shape[0]):
-    cartpts[i,:] = latticevectors[0,:2]*pts[i,0] + latticevectors[1,:2]*pts[i,1]
-print(cartpts)
-twodstructureplotter(latticevectors,cartpts,8,latticeshown=False,speciesshown=False,bondshown=True)#plots the structure
+    cartpts = np.zeros_like(pts)#turns form fractional into cartesian coords
+    for i in range(pts.shape[0]):
+        cartpts[i,:] = latticevectors[0,:2]*pts[i,0] + latticevectors[1,:2]*pts[i,1]
+    print(cartpts)
+    twodstructureplotter(latticevectors,cartpts,8,latticeshown=False,speciesshown=False,bondshown=True)#plots the structure

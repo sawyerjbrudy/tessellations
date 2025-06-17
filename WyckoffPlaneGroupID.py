@@ -66,8 +66,8 @@ def twodstructureplotter(latticevectors, points, size, latticeshown=False, speci
 
 points = np.array(
     [
-    [0,0],
-    [.5,.5]
+    [.5,sqrt(3)/6],
+    [1,sqrt(3)/3]
     ]
 )
 
@@ -80,7 +80,7 @@ species = ['C']*len(points)
 #unit cell description
 #square for now
 a1 = np.array([1,0,0])
-a2 = np.array([0,1,0])
+a2 = np.array([.5,sqrt(3)/2,0])
 lattice_vectors = np.array([a1, a2, [0, 0, 10]])
 
 """Using PyMatGen to convert the points and lattice vectors to PyMatGen Structure and analyze the space group and wyckoffs. 
@@ -94,10 +94,10 @@ spacegroup = analyzer.get_space_group_symbol()
 symmetricalstructure = analyzer.get_symmetrized_structure()
 
 
-###
-#print("Space group:", spacegroup)
-#print(structure)
-#print(symmetricalstructure.wyckoff_letters)
-#print(symmetricalstructure.wyckoff_symbols)
+if __name__ == "__main__":
+    #print("Space group:", spacegroup)
+    #print(structure)
+    #print(symmetricalstructure.wyckoff_letters)
+    #print(symmetricalstructure.wyckoff_symbols)
 
-#twodstructureplotter(lattice_vectors,points,5,latticeshown=False, speciesshown=True,bondshown=True)
+    twodstructureplotter(lattice_vectors,points,9,latticeshown=False, speciesshown=True,bondshown=True)
