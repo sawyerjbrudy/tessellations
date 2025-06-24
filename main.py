@@ -1,8 +1,12 @@
 #!/usr/bin/env python3
 import argparse
 import numpy as np
-from tssltnwyckoff import builda2dcrystal, generallatticevectors
-from WyckoffPlaneGroupID import twodstructureplotter
+from crystalgenerator import builda2dcrystal, generallatticevectors
+from crystalplotter import twodstructureplotter
+from pymatgen.core import Lattice, IStructure, Structure
+
+# Import the bandstructure function
+from generalbandstructure import bandstructure
 
 def main():
     parser = argparse.ArgumentParser(
@@ -13,6 +17,7 @@ Examples:
   python main.py p1 a --size 3
   python main.py p2 a b --lattice --bonds
   python main.py p4m a b c --species --bonds --size 4
+  python main.py p1 a --bandstructure 1.0
 
 Available plane groups:
   p1, p2, pm, pg, cm, pmm, pmg, pgg, cmm, p4, p4m, p4g, p3, p3m, p3m1, p6, p6m
@@ -29,6 +34,8 @@ Available plane groups:
     parser.add_argument('--species', action='store_true', help='Show species points')
     parser.add_argument('--bonds', action='store_true', help='Show bonds')
     parser.add_argument('--planegroup_options', action='store_true', help='List available Wyckoff positions for the given plane group and exit without plotting')
+    parser.add_argument('--download', action='store_true', help='Download the structure as a POSCAR file')
+    parser.add_argument('--bandstructure', type=float, metavar='HOPPING', help='Calculate and plot the bandstructure with the given hopping parameter')
 
     args = parser.parse_args()
 
@@ -162,20 +169,32 @@ Available plane groups:
     # Get lattice vectors for the plane group
     lattice_vectors = generallatticevectors(args.planegroup)
     
-    # Convert fractional coordinates to numpy array
-    cartpts = np.zeros_like(fraccoords)#turns form fractional into cartesian coords
-    for i in range(fraccoords.shape[0]):
-        cartpts[i,:] = lattice_vectors[0,:2]*fraccoords[i,0] + lattice_vectors[1,:2]*fraccoords[i,1]
     
     # Plot the structure with specified options
     twodstructureplotter(
         lattice_vectors, 
-        cartpts, 
+        fraccoords, 
         args.size,
         latticeshown=args.lattice,
         speciesshown=args.species,
-        bondshown=args.bonds
+        bondshown=args.bonds,
+        plane=args.planegroup,
+        wyckoffs=args.wyckoff_positions
     )
+
+    # Calculate and plot bandstructure if requested
+    if args.bandstructure is not None:
+        # The bandstructure function takes (planegroup, wyckoff_positions, hopping_parameter)
+        print(f"Calculating bandstructure with hopping parameter: {args.bandstructure}")
+        bandstructure(args.planegroup, args.wyckoff_positions, args.bandstructure)
+
+    #converting the crystal to a pymatgen structure to be downloaded as a poscar
+    if args.download:
+        species = ['Si']*len(fraccoords)
+        lattice = Lattice(lattice_vectors)
+        fraccoords = np.column_stack((fraccoords[:,0],fraccoords[:,1],np.zeros(len(fraccoords))))
+        structure = Structure(lattice, species, fraccoords)
+        structure.to(filename=args.planegroup + "_" + str(args.wyckoff_positions) + ".poscar",fmt="poscar")
 
 if __name__ == '__main__':
     main()

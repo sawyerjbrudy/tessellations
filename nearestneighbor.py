@@ -43,70 +43,48 @@ def nearestneighborfinder(points):
     # Exclude self-neighbors
     np.fill_diagonal(distances, 9999)
 
-    # Keep track of which points are already connected
-    connected = set()
     nearestneighbors = []
+    primary_neighbors = []
 
     # First pass: connect only primary nearest neighbors
     for i in range(points.shape[0]):
         mindist = np.min(distances[i, :])
         nearestpts = np.where(distances[i, :] - mindist <= 0.01)[0]
-        
+        thisptpn = []
         for n in nearestpts:
-            pair = tuple(sorted([i, n]))
-            if pair not in connected and not np.array_equal(points[n], points[i]):
-                connected.add(pair)
-                nearestneighbors.append([points[i, 0], points[i, 1], 
-                                      points[n, 0], points[n, 1]])
+            thisptpn.append(n)
+            nearestneighbors.append([points[i, 0], points[i, 1], 
+                                    points[n, 0], points[n, 1]])
+        primary_neighbors.append(thisptpn)
 
     # Second pass: only connect secondary neighbors if they don't share any primary neighbors
-    for i in range(points.shape[0]):
-        # Find primary neighbors for this point
-        mindist = np.min(distances[i, :])
-        primary_neighbors = np.where(distances[i, :] - mindist <= 0.01)[0]
-        total_neighbors = primary_neighbors.copy().tolist()
-        
-        count=0
+    for i in range(len(primary_neighbors)):
         # If we have fewer than 3 primary neighbors, look for secondary neighbors
+        total_neighbors = primary_neighbors[i].copy()
+        count = 0
         while len(total_neighbors) < 3 and count <= points.shape[0]-1:
             # Temporarily exclude primary neighbors
-            distances[i, primary_neighbors] = 9999
+            distances[i, total_neighbors] = 9999
             newmin = np.min(distances[i, :])
             secondary_neighbors = np.where(distances[i, :] - newmin <= 0.01)[0] 
 
             for n in secondary_neighbors:
-                pair = tuple(sorted([i, n]))
-                if pair not in connected and not np.array_equal(points[n], points[i]):
-                    # Check if this secondary neighbor shares any primary neighbors with our point
-                    shares_primary = False
-                    for m in primary_neighbors:
-                        # Get primary neighbors of our primary neighbor
-                        m_mindist = np.min(distances[m, :])
-                        m_primary = np.where(distances[m, :] - m_mindist <= 0.01)[0]
-                        if n in m_primary:
-                            shares_primary = True
-                            distances[i, n] = 9999
-
-                            break
-                    
-                    # Also check if this secondary neighbor is already connected to any of our primary neighbors
-                    already_connected = False
-                    for m in primary_neighbors:
-                        if tuple(sorted([m, n])) in connected:
-                            already_connected = True
-                            distances[i, n] = 9999
-                            break
-                    
-                    if not shares_primary and not already_connected:
-                        connected.add(pair)
-                        nearestneighbors.append([points[i, 0], points[i, 1],
-                                              points[n, 0], points[n, 1]])
-                        total_neighbors.append(n)
-                count+=1
+                shared_primary_count = 0
+                for m in primary_neighbors[i]:
+                    if m in primary_neighbors[n]:
+                        shared_primary_count += 1
+                
+                # Connect if shares less than two primary neighbors
+                if shared_primary_count < 2:
+                    nearestneighbors.append([points[i, 0], points[i, 1],
+                                            points[n, 0], points[n, 1]])
+                    total_neighbors.append(n)
+                distances[i,n] = 9999
+            count+=1
 
     return np.array(nearestneighbors)#returns all of the points and their nearest neighbors
 
-"""
+
 if __name__ == "__main__":
     #testing
     points = np.array(
@@ -121,4 +99,3 @@ if __name__ == "__main__":
     )
 
     print(nearestneighborfinder(points))
-"""
