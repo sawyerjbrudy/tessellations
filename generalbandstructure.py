@@ -79,9 +79,9 @@ def bandstructure(plane,wyckoffs,hop_param):
 
 
 
-  #tbm.display()
+  # tbm.display()
 
-  #visualize the model
+  # # visualize the model
   # c1 = tbm.cut_piece(8,0)
   # c2 = c1.cut_piece(8,1)
 

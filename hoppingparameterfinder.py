@@ -14,15 +14,15 @@ def hopindexer(fraccoords,latticevectors):
         if np.allclose(supercell[3,3,i], j[0:2]):
             # Find where j[2:4] appears in the supercell
             searchspec = j[2:4]
-            found = np.where(np.all(np.isclose(supercell, searchspec), axis=-1))
+            found = np.where(np.all(np.isclose(supercell, searchspec, atol=1e-5), axis=-1))
 
-            cell = found[0:2]
-            secondindex = found[2]
-
-            truecell = np.reshape(np.array(cell),2)
-            perfectcell = truecell - np.array([3,3])
-
-            hoppingindex.append([i,secondindex,list(perfectcell)])
+            # Only proceed if matches are found
+            if len(found[0]) > 0 and len(found[1]) > 0 and len(found[2]) > 0:
+                cell = [found[0][0], found[1][0]]
+                secondindex = found[2][0]
+                truecell = np.array(cell)
+                perfectcell = truecell - np.array([3,3])
+                hoppingindex.append([i, secondindex, list(perfectcell)])
    return hoppingindex
 
 if __name__ == "__main__":

@@ -68,7 +68,7 @@ def twodstructureplotter(latticevectors, fraccoords, size, latticeshown=False, s
     if plane != "" and wyckoffs != []:
         plt.title("2D Structure of "+plane+" "+str(wyckoffs))
 
-    plt.axis('equal')
+    plt.axis("equal")
     plt.show()
 
 def supercellmaker(latticevectors,fraccoords):
@@ -82,19 +82,18 @@ def supercellmaker(latticevectors,fraccoords):
     for i in range(7):
         for j in range(7):
             supercell[i,j,:] = points + ((i*latticevectors[0,0:2]) + (j*latticevectors[1,0:2]))
-            print(supercell[i,j,:])
     return supercell
 
 
 
 points = np.array(
     [
-    [.5,sqrt(3)/6],
-    [1,sqrt(3)/3]
+    [.3333,.3333],
+    [.6667,.6667]
     ]
 )
 
-lattice_vectors = np.array([[1,0,0],[0,1,0],[0,0,1]])
+lattice_vectors = np.array([[1,0,0],[.5,sqrt(3)/2,0],[0,0,1]])
 
 if __name__ == "__main__":
     #print("Space group:", spacegroup)

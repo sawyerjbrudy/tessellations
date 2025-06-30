@@ -32,315 +32,403 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
     #takes a plane group and occupied wyckoff positions (wyckoff letters) and gives a generalized sets of fractional points that represent the crystal
     #On symmetry groups such as mirror planes function assigns a general location on the symmetry element for the point, no control yet
     #very tedious
+    
+    occupiedwyckoffpositions = sorted(occupiedwyckoffpositions)
 
     #list of plane groups
     listofplanegroups = ["p1","p2","pm","pg","cm","pmm","pmg","pgg","cmm","p4","p4m","p4g","p3","p3m","p3m1","p6","p6m"]
-    fraccoords = []#fractional coord list to be appended to
-    if planegroup in listofplanegroups: #finds the wanted plane groups, appends the points of the wanted wps
+    fraccoords = []  # fractional coord list to be appended to
+    if planegroup in listofplanegroups:  # finds the wanted plane groups, appends the points of the wanted wps
         if planegroup == listofplanegroups[0]:
             for wp in occupiedwyckoffpositions:
                 if wp == "a":
-                    fraccoords.append([.5,.5])
+                    x_a = input("x_a: ")
+                    y_a = input("y_a: ")
+
+                    fraccoords.append([float(x_a), float(y_a)])
         elif planegroup == listofplanegroups[1]:
             for wp in occupiedwyckoffpositions:
                 if wp == "e":
-                    fraccoords.append([.25,.25])
-                    fraccoords.append([-.25,-.25])
+                    x_e = input("x_e: ")
+                    y_e = input("y_e: ")
+
+                    fraccoords.append([float(x_e), float(y_e)])
+                    fraccoords.append([-float(x_e), -float(y_e)])
                 elif wp == "d":
-                    fraccoords.append([.5,.5])
+                    fraccoords.append([.5, .5])
                 elif wp == "c":
-                    fraccoords.append([.5,0])
+                    fraccoords.append([.5, 0])
                 elif wp == "b":
-                    fraccoords.append([0,.5])
+                    fraccoords.append([0, .5])
                 elif wp == "a":
-                    fraccoords.append([0,0])
+                    fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[2]:
             for wp in occupiedwyckoffpositions:
                 if wp == "c":
-                    fraccoords.append([.25,.25])
-                    fraccoords.append([-.25,.25])
+                    x_c = input("x_c: ")
+                    y_c = input("y_c: ")
+
+                    fraccoords.append([float(x_c), float(y_c)])
+                    fraccoords.append([-float(x_c), float(y_c)])
                 elif wp == "b":
-                    fraccoords.append([.5, .5])
+                    y_b = input("y_b: ")
+
+                    fraccoords.append([.5, float(y_b)])
                 elif wp == "a":
-                    fraccoords.append([0,.5])
+                    y_a = input("y_a: ")
+
+                    fraccoords.append([0, float(y_a)])
         elif planegroup == listofplanegroups[3]:
             for wp in occupiedwyckoffpositions:
                 if wp == "a":
-                    fraccoords.append([.25,.25])
-                    fraccoords.append([-.25,.75])
+                    x_a = input("x_a: ")
+                    y_a = input("y_a: ")
+
+                    fraccoords.append([float(x_a), float(y_a)])
+                    fraccoords.append([-float(x_a), float(y_a) + .5])
         elif planegroup == listofplanegroups[4]:
             for wp in occupiedwyckoffpositions:
                 if wp == "b":
-                    fraccoords.append([.25,.25])
-                    fraccoords.append([-.25,.25])
+                    x_b = input("x_b: ")
+                    y_b = input("y_b: ")
+
+                    fraccoords.append([float(x_b), float(y_b)])
+                    fraccoords.append([-float(x_b), float(y_b)])
+                    fraccoords.append([float(x_b) + .5, float(y_b) + .5])
+                    fraccoords.append([-float(x_b) + .5, float(y_b) + .5])
                 elif wp == "a":
-                    fraccoords.append([0,.5])
+                    y_a = input("y_a: ")
+
+                    fraccoords.append([0, float(y_a)])
+                    fraccoords.append([.5, float(y_a) + .5])
         elif planegroup == listofplanegroups[5]:
             for wp in occupiedwyckoffpositions:
                 if wp == "i":
-                    fraccoords.append([.25,.25])
-                    fraccoords.append([-.25,-.25])
-                    fraccoords.append([-.25,.25])
-                    fraccoords.append([.25,-.25])
+                    x_i = input("x_i: ")
+                    y_i = input("y_i: ")
+
+                    fraccoords.append([float(x_i), float(y_i)])
+                    fraccoords.append([-float(x_i), -float(y_i)])
+                    fraccoords.append([-float(x_i), float(y_i)])
+                    fraccoords.append([float(x_i), -float(y_i)])
                 elif wp == "h":
-                    fraccoords.append([.5,.75])
-                    fraccoords.append([.5,-.75])
+                    y_h = input("y_h: ")
+
+                    fraccoords.append([.5, float(y_h)])
+                    fraccoords.append([.5, -float(y_h)])
                 elif wp == "g":
-                    fraccoords.append([0,.75])
-                    fraccoords.append([0,-.75])
+                    y_g = input("y_g: ")
+
+                    fraccoords.append([0, float(y_g)])
+                    fraccoords.append([0, -float(y_g)])
                 elif wp == "f":
-                    fraccoords.append([.75,.5])
-                    fraccoords.append([-.75,.5])
+                    x_f = input("x_f: ")
+
+                    fraccoords.append([float(x_f), .5])
+                    fraccoords.append([-float(x_f), .5])
                 elif wp == "e":
-                    fraccoords.append([.75,0])
-                    fraccoords.append([-.75,0])
+                    x_e = input("x_e: ")
+
+                    fraccoords.append([float(x_e), 0])
+                    fraccoords.append([-float(x_e), 0])
                 elif wp == "d":
-                    fraccoords.append([.5,.5])
+                    fraccoords.append([.5, .5])
                 elif wp == "c":
-                    fraccoords.append([.5,0])
+                    fraccoords.append([.5, 0])
                 elif wp == "b":
-                    fraccoords.append([0,.5])
+                    fraccoords.append([0, .5])
                 elif wp == "a":
-                    fraccoords.append([0,0])
+                    fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[6]:
             for wp in occupiedwyckoffpositions:
                 if wp == "d":
-                    fraccoords.append([.125,.125])
-                    fraccoords.append([.375,.125])
-                    fraccoords.append([-.125,-.125])
-                    fraccoords.append([.625,-.125])
+                    x_d = input("x_d: ")
+                    y_d = input("y_d: ")
+
+                    fraccoords.append([float(x_d), float(y_d)])
+                    fraccoords.append([-float(x_d), -float(y_d)])
+                    fraccoords.append([-float(x_d) + .5, float(y_d)])
+                    fraccoords.append([float(x_d) + .5, -float(y_d)])
                 elif wp == "c":
-                    fraccoords.append([.25,.25])
-                    fraccoords.append([.75,-.25])
+                    y_c = input("y_c: ")
+
+                    fraccoords.append([.25, float(y_c)])
+                    fraccoords.append([.75, -float(y_c)])
                 elif wp == "b":
-                    fraccoords.append([0,.5])
-                    fraccoords.append([.5,.5])
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, .5])
                 elif wp == "a":
-                    fraccoords.append([0,0])
-                    fraccoords.append([.5,0])
+                    fraccoords.append([0, 0])
+                    fraccoords.append([.5, 0])
         elif planegroup == listofplanegroups[7]:
             for wp in occupiedwyckoffpositions:
                 if wp == "c":
-                    fraccoords.append([.125,.125])
-                    fraccoords.append([-.125,-.125])
-                    fraccoords.append([.375,.625])
-                    fraccoords.append([.625,.375])
+                    x_c = input("x_c: ")
+                    y_c = input("y_c: ")
+
+                    fraccoords.append([float(x_c), float(y_c)])
+                    fraccoords.append([-float(x_c), -float(y_c)])
+                    fraccoords.append([-float(x_c) + .5, float(y_c) + .5])
+                    fraccoords.append([float(x_c) + .5, -float(y_c) + .5])
                 elif wp == "b":
-                    fraccoords.append([0,.5])
-                    fraccoords.append([.5,0])
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, 0])
                 elif wp == "a":
-                    fraccoords.append([0,0])
-                    fraccoords.append([.5,.5])
+                    fraccoords.append([0, 0])
+                    fraccoords.append([.5, .5])
         elif planegroup == listofplanegroups[8]:
             for wp in occupiedwyckoffpositions:
                 if wp == "f":
-                    fraccoords.append([.125,.125])
-                    fraccoords.append([-.125,-.125])
-                    fraccoords.append([-.125,.125])
-                    fraccoords.append([.125,-.125])
-                    fraccoords.append([.625,.625])
-                    fraccoords.append([-.625,-.625])
-                    fraccoords.append([.625,-.625])
-                    fraccoords.append([-.625,.625])
+                    x_f = input("x_f: ")
+                    y_f = input("y_f: ")
+
+                    fraccoords.append([float(x_f), float(y_f)])
+                    fraccoords.append([-float(x_f), -float(y_f)])
+                    fraccoords.append([-float(x_f), float(y_f)])
+                    fraccoords.append([float(x_f), -float(y_f)])
+                    fraccoords.append([float(x_f) + .5, float(y_f) + .5])
+                    fraccoords.append([-float(x_f) + .5, -float(y_f) + .5])
+                    fraccoords.append([-float(x_f) + .5, float(y_f) + .5])
+                    fraccoords.append([float(x_f) + .5, -float(y_f) + .5])
                 elif wp == "e":
-                    fraccoords.append([0,.29])
-                    fraccoords.append([0,-.29])
-                    fraccoords.append([0, .79])
-                    fraccoords.append([0, -.79])
+                    y_e = input("y_e: ")
+
+                    fraccoords.append([0, float(y_e)])
+                    fraccoords.append([0, -float(y_e)])
+                    fraccoords.append([.5, float(y_e) + .5])
+                    fraccoords.append([.5, -float(y_e) + .5])
                 elif wp == "d":
-                    fraccoords.append([.25,0])
-                    fraccoords.append([-.25,0])
-                    fraccoords.append([-.75,0])
-                    fraccoords.append([.75,0])
+                    x_d = input("x_d: ")
+
+                    fraccoords.append([float(x_d), 0])
+                    fraccoords.append([-float(x_d), 0])
+                    fraccoords.append([float(x_d) + .5, .5])
+                    fraccoords.append([-float(x_d) + .5, .5])
                 elif wp == "c":
-                    fraccoords.append([.29,.29])
-                    fraccoords.append([.79,.29])
-                    fraccoords.append([.79, .79])
-                    fraccoords.append([1.29, .79])
+                    fraccoords.append([.25, .25])
+                    fraccoords.append([.75, .25])
+                    fraccoords.append([.75, .75])
+                    fraccoords.append([1.25, .75])
                 elif wp == "b":
-                    fraccoords.append([0,.5])
-                    fraccoords.append([.5,1])
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, 1])
                 elif wp == "a":
-                    fraccoords.append([0,0])
-                    fraccoords.append([.5,.5])
+                    fraccoords.append([0, 0])
+                    fraccoords.append([.5, .5])
         elif planegroup == listofplanegroups[9]:
             for wp in occupiedwyckoffpositions:
                 if wp == "d":
-                    fraccoords.append([.125,.125])
-                    fraccoords.append([-.125,-.125])
-                    fraccoords.append([-.125,.125])
-                    fraccoords.append([.125,-.125])
-                    fraccoords.append([.625,.625])
-                    fraccoords.append([-.625,-.625])
-                    fraccoords.append([.625,-.625])
-                    fraccoords.append([-.625,.625])
+                    x_d = input("x_d: ")
+                    y_d = input("y_d: ")
+
+                    fraccoords.append([float(x_d), float(y_d)])
+                    fraccoords.append([-float(x_d), -float(y_d)])
+                    fraccoords.append([-float(y_d), float(x_d)])
+                    fraccoords.append([float(y_d), -float(x_d)])
                 elif wp == "c":
-                    fraccoords.append([.5,0])
-                    fraccoords.append([0,.5])
+                    fraccoords.append([.5, 0])
+                    fraccoords.append([0, .5])
                 elif wp == "b":
-                    fraccoords.append([.5,.5])
+                    fraccoords.append([.5, .5])
                 elif wp == "a":
-                    fraccoords.append([0,0])
+                    fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[10]:
             for wp in occupiedwyckoffpositions:
                 if wp == "g":
-                    fraccoords.append([.25,.75])
-                    fraccoords.append([-.25,.75])
-                    fraccoords.append([-.25,-.75])
-                    fraccoords.append([.25,-.75])
-                    fraccoords.append([.75,.25])
-                    fraccoords.append([-.75,.25])
-                    fraccoords.append([.75,-.25])
-                    fraccoords.append([-.75,-.25])
+                    x_g = input("x_g: ")
+                    y_g = input("y_g: ")
+
+                    fraccoords.append([float(x_g), float(y_g)])
+                    fraccoords.append([-float(x_g), -float(y_g)])
+                    fraccoords.append([-float(y_g), float(x_g)])
+                    fraccoords.append([float(y_g), -float(x_g)])
+                    fraccoords.append([-float(x_g), float(y_g)])
+                    fraccoords.append([float(x_g), -float(y_g)])
+                    fraccoords.append([float(y_g), float(x_g)])
+                    fraccoords.append([-float(y_g), -float(x_g)])
                 elif wp == "f":
-                    fraccoords.append([.25,.25])
-                    fraccoords.append([-.25,.25])
-                    fraccoords.append([-.25,-.25])
-                    fraccoords.append([.25,-.25])
+                    x_f = input("x_f: ")
+
+                    fraccoords.append([float(x_f), float(x_f)])
+                    fraccoords.append([-float(x_f), -float(x_f)])
+                    fraccoords.append([-float(x_f), float(x_f)])
+                    fraccoords.append([float(x_f), -float(x_f)])
                 elif wp == "e":
-                    fraccoords.append([.25,.5])
-                    fraccoords.append([-.25,.5])
-                    fraccoords.append([.5,.25])
-                    fraccoords.append([.5,-.25])
+                    x_e = input("x_e: ")
+
+                    fraccoords.append([float(x_e), .5])
+                    fraccoords.append([-float(x_e), .5])
+                    fraccoords.append([.5, float(x_e)])
+                    fraccoords.append([.5, -float(x_e)])
                 elif wp == "d":
-                    fraccoords.append([.25,0])
-                    fraccoords.append([-.25,0])
-                    fraccoords.append([0,-.25])
-                    fraccoords.append([0, .25])
+                    x_d = input("x_d: ")
+
+                    fraccoords.append([float(x_d), 0])
+                    fraccoords.append([-float(x_d), 0])
+                    fraccoords.append([0, float(x_d)])
+                    fraccoords.append([0, -float(x_d)])
                 elif wp == "c":
-                    fraccoords.append([.5,0])
-                    fraccoords.append([0,.5])
+                    fraccoords.append([.5, 0])
+                    fraccoords.append([0, .5])
                 elif wp == "b":
-                    fraccoords.append([.5,.5])
+                    fraccoords.append([.5, .5])
                 elif wp == "a":
-                    fraccoords.append([0,0])
+                    fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[11]:
             for wp in occupiedwyckoffpositions:
                 if wp == "d":
-                    fraccoords.append([.125,.75])
-                    fraccoords.append([.75,-.125])
-                    fraccoords.append([-.125,-.75])
-                    fraccoords.append([-.75,.125])
-                    fraccoords.append([.375,1.25])
-                    fraccoords.append([.625,-.25])
-                    fraccoords.append([1.25,.625])
-                    fraccoords.append([-.25,-.375])
+                    x_d = input("x_d: ")
+                    y_d = input("y_d: ")
+
+                    fraccoords.append([float(x_d), float(y_d)])
+                    fraccoords.append([-float(x_d), -float(y_d)])
+                    fraccoords.append([-float(y_d), float(x_d)])
+                    fraccoords.append([float(y_d), -float(x_d)])
+                    fraccoords.append([-float(x_d) + .5, float(y_d) + .5])
+                    fraccoords.append([float(x_d) + .5, -float(y_d) + .5])
+                    fraccoords.append([float(y_d) + .5, float(x_d) + .5])
+                    fraccoords.append([-float(y_d) + .5, -float(x_d) + .5])
                 elif wp == "c":
-                    fraccoords.append([.25,.75])
-                    fraccoords.append([-.25,.25])
-                    fraccoords.append([.25,.25])
-                    fraccoords.append([.75,-.25])
+                    x_c = input("x_c: ")
+
+                    fraccoords.append([float(x_c), float(x_c) + .5])
+                    fraccoords.append([-float(x_c), -float(x_c) + .5])
+                    fraccoords.append([-float(x_c) + .5, float(x_c)])
+                    fraccoords.append([float(x_c) + .5, -float(x_c)])
                 elif wp == "b":
-                    fraccoords.append([0,.5])
-                    fraccoords.append([.5,0])
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, 0])
                 elif wp == "a":
-                    fraccoords.append([0,0])
-                    fraccoords.append([.5,.5])
+                    fraccoords.append([0, 0])
+                    fraccoords.append([.5, .5])
         elif planegroup == listofplanegroups[12]:
             for wp in occupiedwyckoffpositions:
                 if wp == "d":
-                    fraccoords.append([.125,.75])
-                    fraccoords.append([-.75,-.625])
-                    fraccoords.append([.625,-.125])
+                    x_d = input("x_d: ")
+                    y_d = input("y_d: ")
+
+                    fraccoords.append([float(x_d), float(y_d)])
+                    fraccoords.append([-float(y_d), float(x_d) - float(y_d)])
+                    fraccoords.append([-float(x_d) + float(y_d), -float(x_d)])
                 elif wp == "c":
-                    fraccoords.append([.6667,.3333])
+                    fraccoords.append([.6667, .3333])
                 elif wp == "b":
                     fraccoords.append([.3333, .6667])
                 elif wp == "a":
-                    fraccoords.append([0,0])
+                    fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[13]:
             for wp in occupiedwyckoffpositions:
                 if wp == "e":
-                    fraccoords.append([.125,.75])
-                    fraccoords.append([-.75,-.625])
-                    fraccoords.append([.625,-.125])
-                    fraccoords.append([-.75,-.125])
-                    fraccoords.append([.625,.75])
-                    fraccoords.append([.125, -.625])
+                    x_e = input("x_e: ")
+                    y_e = input("y_e: ")
+
+                    fraccoords.append([float(x_e), float(y_e)])
+                    fraccoords.append([-float(y_e), float(x_e) - float(y_e)])
+                    fraccoords.append([-float(x_e) + float(y_e), -float(x_e)])
+                    fraccoords.append([-float(y_e), -float(x_e)])
+                    fraccoords.append([-float(x_e) + float(y_e), float(y_e)])
+                    fraccoords.append([float(x_e), float(x_e) - float(y_e)])
                 elif wp == "d":
-                    fraccoords.append([.25,-.25])
-                    fraccoords.append([.25,.5])
-                    fraccoords.append([-.5,-.25])
+                    x_d = input("x_d: ")
+
+                    fraccoords.append([float(x_d), -float(x_d)])
+                    fraccoords.append([float(x_d), 2 * float(x_d)])
+                    fraccoords.append([-2 * float(x_d), -float(x_d)])
                 elif wp == "c":
-                    fraccoords.append([.6667,.3333])
+                    fraccoords.append([.6667, .3333])
                 elif wp == "b":
                     fraccoords.append([.3333, .6667])
                 elif wp == "a":
-                    fraccoords.append([0,0])
+                    fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[14]:
             for wp in occupiedwyckoffpositions:
                 if wp == "d":
-                    fraccoords.append([.125,.75])
-                    fraccoords.append([-.75,-.625])
-                    fraccoords.append([.625,-.125])
-                    fraccoords.append([.75,.125])
-                    fraccoords.append([-.625,-.75])
-                    fraccoords.append([-.125,.625])
+                    x_d = input("x_d: ")
+                    y_d = input("y_d: ")
+
+                    fraccoords.append([float(x_d), float(y_d)])
+                    fraccoords.append([-float(y_d), float(x_d) - float(y_d)])
+                    fraccoords.append([-float(x_d) + float(y_d), -float(x_d)])
+                    fraccoords.append([float(y_d), float(x_d)])
+                    fraccoords.append([float(x_d) - float(y_d), -float(y_d)])
+                    fraccoords.append([-float(x_d), -float(x_d) + float(y_d)])
                 elif wp == "c":
-                    fraccoords.append([.25,0])
-                    fraccoords.append([0,.25])
-                    fraccoords.append([-.25,-.25])
+                    x_c = input("x_c: ")
+
+                    fraccoords.append([float(x_c), 0])
+                    fraccoords.append([0, float(x_c)])
+                    fraccoords.append([-float(x_c), -float(x_c)])
                 elif wp == "b":
-                    fraccoords.append([.3333,.6667])
-                    fraccoords.append([.6667,.3333])
+                    fraccoords.append([.3333, .6667])
+                    fraccoords.append([.6667, .3333])
                 elif wp == "a":
-                    fraccoords.append([0,0])
+                    fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[15]:
             for wp in occupiedwyckoffpositions:
                 if wp == "d":
-                    fraccoords.append([.125,.75])
-                    fraccoords.append([-.75,-.625])
-                    fraccoords.append([.625,-.125])
-                    fraccoords.append([-.125,-.75])
-                    fraccoords.append([.75,.625])
-                    fraccoords.append([-.625,.125])
+                    x_d = input("x_d: ")
+                    y_d = input("y_d: ")
+
+                    fraccoords.append([float(x_d), float(y_d)])
+                    fraccoords.append([-float(y_d), float(x_d) - float(y_d)])
+                    fraccoords.append([-float(x_d) + float(y_d), -float(x_d)])
+                    fraccoords.append([-float(x_d), -float(y_d)])
+                    fraccoords.append([float(y_d), -float(x_d) + float(y_d)])
+                    fraccoords.append([float(x_d) - float(y_d), float(x_d)])
                 elif wp == "c":
-                    fraccoords.append([.5,0])
-                    fraccoords.append([0,.5])
-                    fraccoords.append([.5,.5])
+                    fraccoords.append([.5, 0])
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, .5])
                 elif wp == "b":
-                    fraccoords.append([.3333,.6667])
-                    fraccoords.append([.6667,.3333])
+                    fraccoords.append([.3333, .6667])
+                    fraccoords.append([.6667, .3333])
                 elif wp == "a":
-                    fraccoords.append([0,0])
+                    fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[16]:
             for wp in occupiedwyckoffpositions:
                 if wp == "f":
-                    fraccoords.append([.125,.75])
-                    fraccoords.append([-.75,-.625])
-                    fraccoords.append([.625,-.125])
-                    fraccoords.append([-.125,-.75])
-                    fraccoords.append([.75,.625])
-                    fraccoords.append([-.625,.125])
-                    fraccoords.append([-.75,-.125])
-                    fraccoords.append([.625,.75])
-                    fraccoords.append([.125,-.625])
-                    fraccoords.append([.75,.125])
-                    fraccoords.append([-.625,-.75])
-                    fraccoords.append([-.125,.625])
+                    x_f = input("x_f: ")
+                    y_f = input("y_f: ")
+
+                    fraccoords.append([float(x_f), float(y_f)])
+                    fraccoords.append([-float(y_f), float(x_f) - float(y_f)])
+                    fraccoords.append([-float(x_f) + float(y_f), -float(x_f)])
+                    fraccoords.append([-float(x_f), -float(y_f)])
+                    fraccoords.append([float(y_f), -float(x_f) + float(y_f)])
+                    fraccoords.append([float(x_f) - float(y_f), float(x_f)])
+                    fraccoords.append([-float(y_f), -float(x_f)])
+                    fraccoords.append([-float(x_f) + float(y_f), float(y_f)])
+                    fraccoords.append([float(x_f), float(x_f) - float(y_f)])
+                    fraccoords.append([float(y_f), float(x_f)])
+                    fraccoords.append([float(x_f) - float(y_f), -float(y_f)])
+                    fraccoords.append([-float(x_f), -float(x_f) + float(y_f)])
                 elif wp == "e":
-                    fraccoords.append([.25,-.25])
-                    fraccoords.append([.25,.5])
-                    fraccoords.append([-.5,-.25])
-                    fraccoords.append([-.25,.25])
-                    fraccoords.append([-.25,-.5])
-                    fraccoords.append([.5,.25])
+                    x_e = input("x_e: ")
+
+                    fraccoords.append([float(x_e), -float(x_e)])
+                    fraccoords.append([float(x_e), 2 * float(x_e)])
+                    fraccoords.append([-2 * float(x_e), -float(x_e)])
+                    fraccoords.append([-float(x_e), float(x_e)])
+                    fraccoords.append([-float(x_e), -2 * float(x_e)])
+                    fraccoords.append([2 * float(x_e), float(x_e)])
                 elif wp == "d":
-                    fraccoords.append([.25,0])
-                    fraccoords.append([0,.25])
-                    fraccoords.append([-.25,-.25])
-                    fraccoords.append([-.25,0])
-                    fraccoords.append([0,-.25])
-                    fraccoords.append([.25,.25])
+                    x_d = input("x_d: ")
+
+                    fraccoords.append([float(x_d), 0])
+                    fraccoords.append([0, float(x_d)])
+                    fraccoords.append([-float(x_d), -float(x_d)])
+                    fraccoords.append([-float(x_d), 0])
+                    fraccoords.append([0, -float(x_d)])
+                    fraccoords.append([float(x_d), float(x_d)])
                 elif wp == "c":
-                    fraccoords.append([.5,0])
-                    fraccoords.append([0,.5])
-                    fraccoords.append([.5,.5])
+                    fraccoords.append([.5, 0])
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, .5])
                 elif wp == "b":
-                    fraccoords.append([.3333,.6667])
-                    fraccoords.append([.6667,.3333])
+                    fraccoords.append([1/3, 2/3])
+                    fraccoords.append([2/3, 1/3])
                 elif wp == "a":
-                    fraccoords.append([0,0])
+                    fraccoords.append([0, 0])
 
     else:
         print("Planegroup not found")
