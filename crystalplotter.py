@@ -71,6 +71,62 @@ def twodstructureplotter(latticevectors, fraccoords, size, latticeshown=False, s
     plt.axis("equal")
     plt.show()
 
+def twodstructureplotter_batch(latticevectors, fraccoords, size, latticeshown=False, speciesshown=False, bondshown=False, plane="",wyckoffdict = {},folder=""):
+    """This function takes a set of cartesian coordinates and lattice vectors that represent the unit cell of your structure
+    Also takes a size argument which gives the square dimensions of your structure, ie. size=5 -> 5 unit cellx5 unit cell supercell
+    The three boolean args tell the function what you would like to see in the plot"""
+    
+    points = np.zeros_like(fraccoords)#turns form fractional into cartesian coords
+    for i in range(fraccoords.shape[0]):
+        points[i,:] = latticevectors[0,:2]*fraccoords[i,0] + latticevectors[1,:2]*fraccoords[i,1]
+
+
+    plt.figure()#initiates matplotlib plot
+
+    latticecoords = np.zeros([(size+1)**2, 2])#preallocates matrix to be filled with lattice points
+    n = 0#variable to enumerate through the rows of the lattice coords mat
+    for i in range(size+1):#iterates over one vector
+        for j in range(size+1):#iterates over other vector
+            posvect = ((i*latticevectors[0]) + (j*latticevectors[1]))#defines lattice points as linear combo of lattice vectors
+            latticecoords[n] = [posvect[0], posvect[1]]#assigns these points to the matrix
+            n += 1
+
+    speciescoords = np.zeros([len(points)*(size**2),2])#preallocates species coordinate matrix
+    modpoints = np.column_stack((points,np.zeros(len(points))))#makes the 2d points 3d so it works with 3d lattice vectors
+    k = 0#iterates through the structure for each point
+    for pt in modpoints:
+        for i in range(size):
+            for j in range(size):
+                newpointv = pt + ((i * latticevectors[0]) + (j * latticevectors[1]))#moves each point by a linear combination of lattice vects
+                speciescoords[k] = [newpointv[0], newpointv[1]]#assigns these new positions in matrix
+                k += 1
+
+    lineends = nearestneighborfinder(speciescoords)#uses my nearest neighbor algorithm to find the nearest neighbors of every point
+
+    if latticeshown == True:
+        plt.plot(latticecoords[:, 0], latticecoords[:, 1], 'ob', zorder=1)#graphs lattice points
+    if speciesshown == True:
+        plt.plot(speciescoords[:,0], speciescoords[:,1], 'ro', markersize=3, zorder=3)#graphs actual structure
+    if bondshown == True and (size > 1 or len(points) > 1):
+       for line in lineends:
+            x1,y1,x2,y2 = line
+
+            plt.plot([x1,x2],[y1,y2], color = 'green')#shows bonds
+    
+    if plane != "" and wyckoffdict != {}:
+        plt.title("2D Structure of "+plane+" "+str(wyckoffdict))
+    
+    wyckofflist = []
+    for key,val in wyckoffdict.items():
+        if val != None:
+            wyckofflist.append(str(key+"="+str(val)))
+        else:
+            wyckofflist.append(str(key))
+
+    plt.axis("equal")
+    plt.savefig(folder+"/"+plane+"_"+str(wyckofflist)+".png", dpi=50)
+    plt.close()
+
 def supercellmaker(latticevectors,fraccoords):
     #makes a 7x7 supercell in order to analyze the bonding in the middle of the unit cell
 
@@ -101,4 +157,4 @@ if __name__ == "__main__":
     #print(symmetricalstructure.wyckoff_letters)
     #print(symmetricalstructure.wyckoff_symbols)
 
-    twodstructureplotter(lattice_vectors,points,9,latticeshown=False, speciesshown=True,bondshown=True)
+    twodstructureplotter_batch(lattice_vectors,points,4,latticeshown=False, speciesshown=True,bondshown=True)

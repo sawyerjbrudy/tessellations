@@ -79,14 +79,14 @@ def bandstructure(plane,wyckoffs,hop_param):
 
 
 
-  # tbm.display()
+#   tbm.display()
 
-  # # visualize the model
-  # c1 = tbm.cut_piece(8,0)
-  # c2 = c1.cut_piece(8,1)
+#   # visualize the model
+#   c1 = tbm.cut_piece(8,0)
+#   c2 = c1.cut_piece(8,1)
 
-  # fig = c2.visualize(0,1)
-  # plt.show()
+#   fig = c2.visualize(0,1)
+#   plt.show()
 
-if __name__ == "__main__":
-    bandstructure("p6m",["c"],-.5)
+# if __name__ == "__main__":
+#     bandstructure("p6m",["c"],-.5)

@@ -311,9 +311,9 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
                     fraccoords.append([-float(y_d), float(x_d) - float(y_d)])
                     fraccoords.append([-float(x_d) + float(y_d), -float(x_d)])
                 elif wp == "c":
-                    fraccoords.append([.6667, .3333])
+                    fraccoords.append([2/3, 1/3])
                 elif wp == "b":
-                    fraccoords.append([.3333, .6667])
+                    fraccoords.append([1/3, 2/3])
                 elif wp == "a":
                     fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[13]:
@@ -335,9 +335,9 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
                     fraccoords.append([float(x_d), 2 * float(x_d)])
                     fraccoords.append([-2 * float(x_d), -float(x_d)])
                 elif wp == "c":
-                    fraccoords.append([.6667, .3333])
+                    fraccoords.append([2/3, 1/3])
                 elif wp == "b":
-                    fraccoords.append([.3333, .6667])
+                    fraccoords.append([1/3, 2/3])
                 elif wp == "a":
                     fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[14]:
@@ -359,8 +359,8 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
                     fraccoords.append([0, float(x_c)])
                     fraccoords.append([-float(x_c), -float(x_c)])
                 elif wp == "b":
-                    fraccoords.append([.3333, .6667])
-                    fraccoords.append([.6667, .3333])
+                    fraccoords.append([1/3, 2/3])
+                    fraccoords.append([2/3, 1/3])
                 elif wp == "a":
                     fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[15]:
@@ -380,8 +380,8 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
                     fraccoords.append([0, .5])
                     fraccoords.append([.5, .5])
                 elif wp == "b":
-                    fraccoords.append([.3333, .6667])
-                    fraccoords.append([.6667, .3333])
+                    fraccoords.append([1/3, 2/3])
+                    fraccoords.append([2/3, 1/3])
                 elif wp == "a":
                     fraccoords.append([0, 0])
         elif planegroup == listofplanegroups[16]:
@@ -429,11 +429,341 @@ def builda2dcrystal(planegroup : str, occupiedwyckoffpositions : list[str]) -> n
                     fraccoords.append([2/3, 1/3])
                 elif wp == "a":
                     fraccoords.append([0, 0])
+                elif wp == "honeycomb":
+                    fraccoords.append([1/3,1/3])
+                    fraccoords.append([2/3,2/3])
 
-    else:
-        print("Planegroup not found")
+        return np.array(fraccoords)
+    print("Planegroup not found")
+    return np.array([])
 
-    return np.array(fraccoords)
+def builda2dcrystal_batch(planegroup: str, wyckoff_dict: dict) -> np.ndarray:
+    """Generate fractional coordinates for a 2D crystal structure based on plane group and Wyckoff positions.
+
+    Parameters
+    ----------
+    planegroup : str
+        The plane group symbol (e.g. "p1", "p2", "pm", etc.)
+    wyckoff_dict : dict
+        Dictionary where keys are Wyckoff letters and values are either a list of coordinates (for positions that need input) or None (for positions that do not)
+
+    Returns
+    -------
+    numpy.ndarray
+        Array of fractional coordinates for all equivalent positions in the unit cell
+    """
+    listofplanegroups = ["p1","p2","pm","pg","cm","pmm","pmg","pgg","cmm","p4","p4m","p4g","p3","p3m","p3m1","p6","p6m"]
+    fraccoords = []
+    if planegroup in listofplanegroups:
+        if planegroup == "p1":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "a" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+        elif planegroup == "p2":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "e" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), -float(coords[1])])
+                elif wp == "d":
+                    fraccoords.append([.5, .5])
+                elif wp == "c":
+                    fraccoords.append([.5, 0])
+                elif wp == "b":
+                    fraccoords.append([0, .5])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+        elif planegroup == "pm":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "c" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), float(coords[1])])
+                elif wp == "b" and coords is not None:
+                    fraccoords.append([.5, float(coords[0])])
+                elif wp == "a" and coords is not None:
+                    fraccoords.append([0, float(coords[0])])
+        elif planegroup == "pg":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "a" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), float(coords[1]) + .5])
+        elif planegroup == "cm":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "b" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), float(coords[1])])
+                    fraccoords.append([float(coords[0]) + .5, float(coords[1]) + .5])
+                    fraccoords.append([-float(coords[0]) + .5, float(coords[1]) + .5])
+                elif wp == "a" and coords is not None:
+                    fraccoords.append([0, float(coords[0])])
+                    fraccoords.append([.5, float(coords[0]) + .5])
+        elif planegroup == "pmm":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "i" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), -float(coords[1])])
+                    fraccoords.append([-float(coords[0]), float(coords[1])])
+                    fraccoords.append([float(coords[0]), -float(coords[1])])
+                elif wp == "h" and coords is not None:
+                    fraccoords.append([.5, float(coords[0])])
+                    fraccoords.append([.5, -float(coords[0])])
+                elif wp == "g" and coords is not None:
+                    fraccoords.append([0, float(coords[0])])
+                    fraccoords.append([0, -float(coords[0])])
+                elif wp == "f" and coords is not None:
+                    fraccoords.append([float(coords[0]), .5])
+                    fraccoords.append([-float(coords[0]), .5])
+                elif wp == "e" and coords is not None:
+                    fraccoords.append([float(coords[0]), 0])
+                    fraccoords.append([-float(coords[0]), 0])
+                elif wp == "d":
+                    fraccoords.append([.5, .5])
+                elif wp == "c":
+                    fraccoords.append([.5, 0])
+                elif wp == "b":
+                    fraccoords.append([0, .5])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+        elif planegroup == "pmg":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "d" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), -float(coords[1])])
+                    fraccoords.append([-float(coords[0]) + .5, float(coords[1])])
+                    fraccoords.append([float(coords[0]) + .5, -float(coords[1])])
+                elif wp == "c" and coords is not None:
+                    fraccoords.append([.25, float(coords[0])])
+                    fraccoords.append([.75, -float(coords[0])])
+                elif wp == "b":
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, .5])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+                    fraccoords.append([.5, 0])
+        elif planegroup == "pgg":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "c" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), -float(coords[1])])
+                    fraccoords.append([-float(coords[0]) + .5, float(coords[1]) + .5])
+                    fraccoords.append([float(coords[0]) + .5, -float(coords[1]) + .5])
+                elif wp == "b":
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, 0])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+                    fraccoords.append([.5, .5])
+        elif planegroup == "cmm":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "f" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), -float(coords[1])])
+                    fraccoords.append([-float(coords[0]), float(coords[1])])
+                    fraccoords.append([float(coords[0]), -float(coords[1])])
+                    fraccoords.append([float(coords[0]) + .5, float(coords[1]) + .5])
+                    fraccoords.append([-float(coords[0]) + .5, -float(coords[1]) + .5])
+                    fraccoords.append([-float(coords[0]) + .5, float(coords[1]) + .5])
+                    fraccoords.append([float(coords[0]) + .5, -float(coords[1]) + .5])
+                elif wp == "e" and coords is not None:
+                    fraccoords.append([0, float(coords[0])])
+                    fraccoords.append([0, -float(coords[0])])
+                    fraccoords.append([.5, float(coords[0]) + .5])
+                    fraccoords.append([.5, -float(coords[0]) + .5])
+                elif wp == "d" and coords is not None:
+                    fraccoords.append([float(coords[0]), 0])
+                    fraccoords.append([-float(coords[0]), 0])
+                    fraccoords.append([float(coords[0]) + .5, .5])
+                    fraccoords.append([-float(coords[0]) + .5, .5])
+                elif wp == "c":
+                    fraccoords.append([.25, .25])
+                    fraccoords.append([.75, .25])
+                    fraccoords.append([.75, .75])
+                    fraccoords.append([1.25, .75])
+                elif wp == "b":
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, 1])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+                    fraccoords.append([.5, .5])
+        elif planegroup == "p4":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "d" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), -float(coords[1])])
+                    fraccoords.append([-float(coords[1]), float(coords[0])])
+                    fraccoords.append([float(coords[1]), -float(coords[0])])
+                elif wp == "c":
+                    fraccoords.append([.5, 0])
+                    fraccoords.append([0, .5])
+                elif wp == "b":
+                    fraccoords.append([.5, .5])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+        elif planegroup == "p4m":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "g" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), -float(coords[1])])
+                    fraccoords.append([-float(coords[1]), float(coords[0])])
+                    fraccoords.append([float(coords[1]), -float(coords[0])])
+                    fraccoords.append([-float(coords[0]), float(coords[1])])
+                    fraccoords.append([float(coords[0]), -float(coords[1])])
+                    fraccoords.append([float(coords[1]), float(coords[0])])
+                    fraccoords.append([-float(coords[1]), -float(coords[0])])
+                elif wp == "f" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[0])])
+                    fraccoords.append([-float(coords[0]), -float(coords[0])])
+                    fraccoords.append([-float(coords[0]), float(coords[0])])
+                    fraccoords.append([float(coords[0]), -float(coords[0])])
+                elif wp == "e" and coords is not None:
+                    fraccoords.append([float(coords[0]), .5])
+                    fraccoords.append([-float(coords[0]), .5])
+                    fraccoords.append([.5, float(coords[0])])
+                    fraccoords.append([.5, -float(coords[0])])
+                elif wp == "d" and coords is not None:
+                    fraccoords.append([float(coords[0]), 0])
+                    fraccoords.append([-float(coords[0]), 0])
+                    fraccoords.append([0, float(coords[0])])
+                    fraccoords.append([0, -float(coords[0])])
+                elif wp == "c":
+                    fraccoords.append([.5, 0])
+                    fraccoords.append([0, .5])
+                elif wp == "b":
+                    fraccoords.append([.5, .5])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+        elif planegroup == "p4g":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "d" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[0]), -float(coords[1])])
+                    fraccoords.append([-float(coords[1]), float(coords[0])])
+                    fraccoords.append([float(coords[1]), -float(coords[0])])
+                    fraccoords.append([-float(coords[0]) + .5, float(coords[1]) + .5])
+                    fraccoords.append([float(coords[0]) + .5, -float(coords[1]) + .5])
+                    fraccoords.append([float(coords[1]) + .5, float(coords[0]) + .5])
+                    fraccoords.append([-float(coords[1]) + .5, -float(coords[0]) + .5])
+                elif wp == "c" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[0]) + .5])
+                    fraccoords.append([-float(coords[0]), -float(coords[0]) + .5])
+                    fraccoords.append([-float(coords[0]) + .5, float(coords[0])])
+                    fraccoords.append([float(coords[0]) + .5, -float(coords[0])])
+                elif wp == "b":
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, 0])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+                    fraccoords.append([.5, .5])
+        elif planegroup == "p3":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "d" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[1]), float(coords[0]) - float(coords[1])])
+                    fraccoords.append([-float(coords[0]) + float(coords[1]), -float(coords[0])])
+                elif wp == "c":
+                    fraccoords.append([2/3, 1/3])
+                elif wp == "b":
+                    fraccoords.append([1/3, 2/3])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+        elif planegroup == "p3m":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "e" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[1]), float(coords[0]) - float(coords[1])])
+                    fraccoords.append([-float(coords[0]) + float(coords[1]), -float(coords[0])])
+                    fraccoords.append([-float(coords[1]), -float(coords[0])])
+                    fraccoords.append([-float(coords[0]) + float(coords[1]), float(coords[1])])
+                    fraccoords.append([float(coords[0]), float(coords[0]) - float(coords[1])])
+                elif wp == "d" and coords is not None:
+                    fraccoords.append([float(coords[0]), -float(coords[0])])
+                    fraccoords.append([float(coords[0]), 2 * float(coords[0])])
+                    fraccoords.append([-2 * float(coords[0]), -float(coords[0])])
+                elif wp == "c":
+                    fraccoords.append([2/3, 1/3])
+                elif wp == "b":
+                    fraccoords.append([1/3, 2/3])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+        elif planegroup == "p3m1":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "d" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[1]), float(coords[0]) - float(coords[1])])
+                    fraccoords.append([-float(coords[0]) + float(coords[1]), -float(coords[0])])
+                    fraccoords.append([float(coords[1]), float(coords[0])])
+                    fraccoords.append([float(coords[0]) - float(coords[1]), -float(coords[1])])
+                    fraccoords.append([-float(coords[0]), -float(coords[0]) + float(coords[1])])
+                elif wp == "c" and coords is not None:
+                    fraccoords.append([float(coords[0]), 0])
+                    fraccoords.append([0, float(coords[0])])
+                    fraccoords.append([-float(coords[0]), -float(coords[0])])
+                elif wp == "b":
+                    fraccoords.append([1/3, 2/3])
+                    fraccoords.append([2/3, 1/3])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+        elif planegroup == "p6":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "d" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[1]), float(coords[0]) - float(coords[1])])
+                    fraccoords.append([-float(coords[0]) + float(coords[1]), -float(coords[0])])
+                    fraccoords.append([-float(coords[0]), -float(coords[1])])
+                    fraccoords.append([float(coords[1]), -float(coords[0]) + float(coords[1])])
+                    fraccoords.append([float(coords[0]) - float(coords[1]), float(coords[0])])
+                elif wp == "c":
+                    fraccoords.append([.5, 0])
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, .5])
+                elif wp == "b":
+                    fraccoords.append([1/3, 2/3])
+                    fraccoords.append([2/3, 1/3])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+        elif planegroup == "p6m":
+            for wp, coords in wyckoff_dict.items():
+                if wp == "f" and coords is not None:
+                    fraccoords.append([float(coords[0]), float(coords[1])])
+                    fraccoords.append([-float(coords[1]), float(coords[0]) - float(coords[1])])
+                    fraccoords.append([-float(coords[0]) + float(coords[1]), -float(coords[0])])
+                    fraccoords.append([-float(coords[0]), -float(coords[1])])
+                    fraccoords.append([float(coords[1]), -float(coords[0]) + float(coords[1])])
+                    fraccoords.append([float(coords[0]) - float(coords[1]), float(coords[0])])
+                    fraccoords.append([-float(coords[1]), -float(coords[0])])
+                    fraccoords.append([-float(coords[0]) + float(coords[1]), float(coords[1])])
+                    fraccoords.append([float(coords[0]), float(coords[0]) - float(coords[1])])
+                    fraccoords.append([float(coords[1]), float(coords[0])])
+                    fraccoords.append([float(coords[0]) - float(coords[1]), -float(coords[1])])
+                    fraccoords.append([-float(coords[0]), -float(coords[0]) + float(coords[1])])
+                elif wp == "e" and coords is not None:
+                    fraccoords.append([float(coords[0]), -float(coords[0])])
+                    fraccoords.append([float(coords[0]), 2 * float(coords[0])])
+                    fraccoords.append([-2 * float(coords[0]), -float(coords[0])])
+                    fraccoords.append([-float(coords[0]), float(coords[0])])
+                    fraccoords.append([-float(coords[0]), -2 * float(coords[0])])
+                    fraccoords.append([2 * float(coords[0]), float(coords[0])])
+                elif wp == "d" and coords is not None:
+                    fraccoords.append([float(coords[0]), 0])
+                    fraccoords.append([0, float(coords[0])])
+                    fraccoords.append([-float(coords[0]), -float(coords[0])])
+                    fraccoords.append([-float(coords[0]), 0])
+                    fraccoords.append([0, -float(coords[0])])
+                    fraccoords.append([float(coords[0]), float(coords[0])])
+                elif wp == "c":
+                    fraccoords.append([.5, 0])
+                    fraccoords.append([0, .5])
+                    fraccoords.append([.5, .5])
+                elif wp == "b":
+                    fraccoords.append([1/3, 2/3])
+                    fraccoords.append([2/3, 1/3])
+                elif wp == "a":
+                    fraccoords.append([0, 0])
+                elif wp == "honeycomb":
+                    fraccoords.append([1/3,1/3])
+                    fraccoords.append([2/3,2/3])
+        return np.array(fraccoords)
+    print("Planegroup not found")
+    return np.array([])
 
 def generallatticevectors(planegroup: str) -> np.ndarray:
     """Return lattice vectors for a given 2D plane group.
@@ -470,9 +800,7 @@ def generallatticevectors(planegroup: str) -> np.ndarray:
         np.array([[1,0,0], [.5,sqrt(3)/2,0], [0,0,1]])              # p3,p3m,p3m1,p6,p6m
     ]
     
-    if planegroup not in listofplanegroups:
-        print("Planegroup not found")
-        return latticevectorsset[0]
+
 
     if planegroup == "p1":
         return latticevectorsset[0]
@@ -484,6 +812,10 @@ def generallatticevectors(planegroup: str) -> np.ndarray:
         return latticevectorsset[3]
     elif planegroup in ["p3", "p3m", "p3m1", "p6", "p6m"]:
         return latticevectorsset[4]
+    
+    print("Planegroup not found")
+    return latticevectorsset[0]
+
 
 if __name__ == "__main__":
     #all the testing
